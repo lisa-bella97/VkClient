@@ -1,13 +1,20 @@
+#ifndef VKCLIENT_CLIENT_HPP
+#define VKCLIENT_CLIENT_HPP
+
 #include <string>
-#include <map>
 
 namespace Vk
 {
 	class Client
 	{
 	public:
-		using dict_t = std::map<std::string, std::string>;
-   		Client(dict_t settings);
+   		Client(std::string token) : _token(token) {}
    		auto check_connection() -> bool;
+
+	private:
+        	std::string _token;
+        	static auto write_callback(char * data, size_t size, size_t nmemb, std::string& buff) -> int;
 	};
 }
+
+#endif
