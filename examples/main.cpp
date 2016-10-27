@@ -4,7 +4,9 @@
 int main()
 {
 	std::string token;
-	std::cout << "Access_token = "; // скопировать после выполнения запроса https://oauth.vk.com/authorize?client_id=5682862&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&response_type=token&v=5.59
+	std::cout << "Перейдите по данному URL:" << std::endl;
+	std::cout << "https://oauth.vk.com/authorize?client_id=5682862&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&response_type=token&v=5.59" << std::endl;
+	std::cout << "Access_token = "; 
 	std::cin >> token;
 
 	Vk::Client vk_cl(token);
