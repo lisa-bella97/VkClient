@@ -1,54 +1,108 @@
-#include <vk/client.hpp>
-#include <iostream>
 #include <curl/curl.h>
-#include <boost/regex.hpp>
+#include <iostream>
+#include <vk/client.hpp>
+#include <vk/json.hpp>
 
 namespace Vk
 {
-	auto Client::write_callback(char * data, size_t size, size_t nmemb, std::string& buff) -> int
-	{
-		int result = 0;
+    using json = nlohmann::json;
 
-		if (buff.c_str())
-		{
-			buff.append(data, size * nmemb);
-			result = size * nmemb;
-		}
+    auto Client::check_connection() -> bool
+    {
+        CURL *curl = curl_easy_init();
 
-		return result;
-	}
+        if (curl)
+        {
+            std::string fields = "access_token=" + _settings["token"] + "&v=5.59";
+            std::string buffer = "";
 
-	auto Client::check_connection() -> bool
-	{
-		CURL *curl = curl_easy_init();
+            curl_easy_setopt(curl, CURLOPT_URL, "https://api.vk.com/method/account.getProfileInfo?");
+            curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, fields.c_str());
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, fields.length());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
 
-		if (curl)
-		{
-			std::string fields = "access_token=" + _token + "&v=5.59";
-			std::string buffer = "";
+            if (curl_easy_perform(curl) == CURLE_OK)
+            {
+                json jsn_obj = json::parse(buffer);
+                json jsn_response = jsn_obj["response"];
 
-			curl_easy_setopt(curl, CURLOPT_URL, "https://api.vk.com/method/account.getProfileInfo?");
-			curl_easy_setopt(curl, CURLOPT_POST, 1);
-			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, fields.c_str());
-			curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, fields.length());
-			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-			curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
+                if (!jsn_response.is_null())
+                {
+                    curl_easy_cleanup(curl);
+                    return true;
+                }
+            }
+        }
 
-			if (curl_easy_perform(curl) == CURLE_OK)
-			{
-				boost::regex pattern("^{\"response\"(.*)}$");
-				boost::smatch matches;
+        curl_easy_cleanup(curl);
+        return false;
+    }
 
-				if (boost::regex_match(buffer, matches, pattern))
-				{
-					curl_easy_cleanup(curl);
-					return true;
-				}
-			}
-		}
+    auto Client::get_friends() -> void
+    {
+        CURL *curl = curl_easy_init();
 
-		curl_easy_cleanup(curl);
-		return false;
-	}
+        if (curl)
+        {
+            std::string fields = "fields=bdate&access_token=" + _settings["token"] + "&v=5.59";
+            std::string buffer = "";
+
+            curl_easy_setopt(curl, CURLOPT_URL, "https://api.vk.com/method/friends.get?");
+            curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, fields.c_str());
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, fields.length());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
+
+            if (curl_easy_perform(curl) == CURLE_OK)
+            {
+                json jsn_obj = json::parse(buffer);
+                json jsn_response = jsn_obj["response"];
+                json jsn_items = jsn_response["items"];
+                int counter = 0;
+
+                for (json::iterator it = jsn_items.begin(); it != jsn_items.end(); ++it)
+                {
+                    std::cout << ++counter << ". ";
+
+                    json jsn_id = it.value()["id"];
+                    if (!jsn_id.is_null())
+                        std::cout << "id" << ": " << jsn_id.begin().value() << std::endl;
+
+                    json jsn_fname = it.value()["first_name"];
+                    if (!jsn_fname.is_null())
+                        std::cout << "first name" << ": " << jsn_fname.begin().value() << std::endl;
+
+                    json jsn_lname = it.value()["last_name"];
+                    if (!jsn_lname.is_null())
+                        std::cout << "last name" << ": " << jsn_lname.begin().value() << std::endl;
+
+                    json jsn_bdate = it.value()["bdate"];
+                    if (!jsn_bdate.is_null())
+                        std::cout << "birthday" << ": " << jsn_bdate.begin().value() << std::endl;
+
+                    json jsn_online = it.value()["online"];
+                    if (!jsn_online.is_null())
+                        std::cout << "online" << ": " << (jsn_online.begin().value() == 1 ? "yes" : "no") << std::endl;
+                }
+            }
+        }
+
+        curl_easy_cleanup(curl);
+    }
+
+    auto Client::write_callback(char *data, size_t size, size_t nmemb, std::string &buff) -> size_t
+    {
+        int result = 0;
+
+        if (buff.c_str())
+        {
+            buff.append(data, size * nmemb);
+            result = size * nmemb;
+        }
+
+        return result;
+    }
 }

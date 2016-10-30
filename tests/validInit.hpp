@@ -1,7 +1,11 @@
-#include <vk/client.hpp>
+#ifndef VKCLIENT_VALIDINIT_HPP
+#define VKCLIENT_VALIDINIT_HPP
+
+#include <string>
+#include <map>
 #include <iostream>
 
-int main()
+std::map<std::string, std::string> get_valid_settings()
 {
     std::string token;
     std::cout << "Для получения access_token пройдите по данному url:" << std::endl;
@@ -9,12 +13,7 @@ int main()
     std::cout << "Access_token = ";
     std::cin >> token;
 
-    Vk::Client vk_cl({{"token", token}});
+    return std::map<std::string, std::string>({{"token", token}});
+};
 
-    if (vk_cl.check_connection())
-        std::cout << "Connected." << std::endl;
-
-    vk_cl.get_friends();
-
-    return 0;
-}
+#endif
