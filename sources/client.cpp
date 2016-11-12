@@ -14,6 +14,7 @@ namespace Vk
         if (curl)
         {
             std::string fields = "access_token=" + _settings["token"] + "&v=5.59";
+            std::cout << _settings["token"] << std::endl;
             std::string buffer = "";
 
             curl_easy_setopt(curl, CURLOPT_URL, "https://api.vk.com/method/account.getProfileInfo?");
@@ -27,6 +28,7 @@ namespace Vk
             if (curl_easy_perform(curl) == CURLE_OK)
             {
                 std::cout << "if (curl_easy_perform(curl) == CURLE_OK)" << std::endl;
+                std::cout << buffer << std::endl;
                 json jsn_obj = json::parse(buffer);
                 json jsn_response = jsn_obj["response"];
 
