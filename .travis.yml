@@ -1,4 +1,6 @@
 language: generic
+env:
+  global: VALID_TOKEN=59fb3a7570356fa0837f7db32ed04b2fafa8c7ea8d347d2c95ca35352d87a91b5343f29cb415948168489
 matrix:
   include:
     - os: linux
@@ -12,11 +14,10 @@ matrix:
           sources: &sources
             - llvm-toolchain-precise
             - ubuntu-toolchain-r-test
-    - os: osx
-      compiler: clang-3.8
-      env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
-env:
-  global: VALID_TOKEN=59fb3a7570356fa0837f7db32ed04b2fafa8c7ea8d347d2c95ca35352d87a91b5343f29cb415948168489
+    #- os: osx
+      #compiler: clang-3.8
+      #env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
+
     #secure: "iPQ7VwXpUPmVxR31NfHcQTfQ+VcXOICc0QhU9zEaV+RBW1vUTmdOrhSnWwLTMId4PGBnX9wyufWgdf9u/mRxb3jirWC3M7E2xNa28UhobhePTbMStO+lzHkt8ijiosX7MjL7hSZGX6BBXV3sU/iJHSE9wKVaSbXaooJOGD/lIZXVZ6q1y53DQa1YaezgtUToPVqj42tl5cZsdjeZyFqBjQfYxBLfma9/+0069fvQA020SEC2UbwdpOlwZtCdS6mqaT1MhxlsewQu6ChHFzmr36lE0nWW6gVq3plRVtyNg/jgQfLH9Dk0khp4xkmKysjQkN6cAEAzKBLVtuMy9SFdQEtW9K1VmC3CKI9MvlMm0ggQFeZS32PH+nrDIIVxPJl3zQZPM/TBTDHFXH5v6uU3Ti+21SVijx/eHlFlfgi9OD8wjMoWPghuV6NXKkhkHnKLpAeRHJPtcopf+lj98r82ZIpUgi5cwIh4NYV5qgXOarJJAnmhZzjNnvVxSo1P/djuOlJ0qTaYk5vABUFPM57bwC5bR7AvgHYaIDERSyW8MDRas6Z7Y4hdWVy90Kw7pg20GuujNk7XncgrFPwgJg4SHTGSLtpOnANjyKORJWSLVD9a/wkc4g5sPwxtIR3YeK87iI3MYvoi5u7RNLcTk6spN2jZDKzbp3LWUcmJKObv/Ko="
 
 script:
