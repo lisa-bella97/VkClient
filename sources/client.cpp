@@ -22,14 +22,17 @@ namespace Vk
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, fields.length());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
+            std::cout << "curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);" << std::endl;
 
             if (curl_easy_perform(curl) == CURLE_OK)
             {
+                std::cout << "if (curl_easy_perform(curl) == CURLE_OK)" << std::endl;
                 json jsn_obj = json::parse(buffer);
                 json jsn_response = jsn_obj["response"];
 
                 if (!jsn_response.is_null())
                 {
+                    std::cout << "if (!jsn_response.is_null())" << std::endl;
                     curl_easy_cleanup(curl);
                     return true;
                 }
@@ -37,6 +40,7 @@ namespace Vk
         }
 
         curl_easy_cleanup(curl);
+        std::cout << "curl_easy_cleanup(curl); return false" << std::endl;
         return false;
     }
 
