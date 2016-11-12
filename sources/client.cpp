@@ -95,7 +95,7 @@ namespace Vk
 
     auto Client::write_callback(char *data, size_t size, size_t nmemb, std::string &buff) -> size_t
     {
-        int result = 0;
+        size_t result = 0;
 
         if (buff.c_str())
         {

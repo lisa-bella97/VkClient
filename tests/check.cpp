@@ -1,5 +1,5 @@
 #include <vk/client.hpp>
-#include "validInit.hpp"
+#include <iostream>
 #include "catch.hpp"
 
 SCENARIO("client must check connection using a token")
@@ -21,7 +21,8 @@ SCENARIO("client must check connection using a token")
 
     GIVEN("a valid token")
     {
-        std::map<std::string, std::string> valid_settings(get_valid_settings());
+        std::map<std::string, std::string> valid_settings;
+        valid_settings["token"] = getenv("VALID_TOKEN");
 
         WHEN("initialize client")
         {
