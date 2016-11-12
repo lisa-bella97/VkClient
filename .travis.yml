@@ -3,7 +3,7 @@ matrix:
   include:
     - os: linux
       sudo: required
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5 BUILD_TESTS="TRUE"
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
       addons:
         apt:
           packages:
@@ -14,11 +14,12 @@ matrix:
             - ubuntu-toolchain-r-test
     - os: osx
       compiler: clang-3.8
-      env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl" BUILD_TESTS="TRUE"
+      env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
 env:
   global:
     secure: "FAMyhzcbtS9X56Vg88QUxxF0eVuIHamQ0+FG5my9NX9IV/XItQPikNNfR4370fHf5VkZjkqveorwDo2WHrkwHWgRK69LZpthg95z+1zgozQlTfdMJ6YwNNi1OhHBq30xwbNK2/v0smTFhRTq0e0EJOEkRgOvjz0e36PVviIlxy1VSXbX01sjgEUT+vFpUmppFgdrZVXeLZ1k3x8RyofKhn6DMShK1h4Ujx6vQuh3Zm0Putmysmijp1SVSXAKXRIKIGOOM2GDLbUtOuG+PWs18M3Pi7koMPquenKJjxwPQiDs7Oq55VZM5LyiMCnnmg7YMvJhuiZCS9t1Yn9kW6eG5tjI3nsCf9Lz69cnKlCzMHYCAzTZig+W4lFD/HyiUYz1R2jZKdxk/Yio285wIMLuP6SOMbAMiESZX/lliWiyN1poccrvtU8wz2UJQOxOT+ZJFDmn4uJ4ojOr0pP47Yt+gYpmhO4jEHVaTKig/+DxdNJeUK4CnQ9sVNwQ9dbZnj0My8ZPsvE46dsoWZQQyuEb8K4Em6VZLaUWiEgvlmSIkieJIiSgjpXYUKN0csQ9QPdQa8xYfYVEfDm8F5T3XJuUg8/lM9+uCIM4fG0A4DLDAhR+vwGkNj/IVB2Tm0iOXWD73JEpwE1JeIaMPht676KkBqiFdLUnhwDe1J+zse7CDb8="
 
 script:
   - mkdir build && cd build
-  - cmake .. -DBUILD_TESTS:BOOL=$BUILD_TESTS && make
+  - cmake .. && make
+  - ./check -s -r compact

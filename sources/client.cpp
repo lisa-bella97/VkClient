@@ -93,13 +93,13 @@ namespace Vk
         curl_easy_cleanup(curl);
     }
 
-    auto Client::write_callback(char *data, size_t size, size_t nmemb, std::string &buff) -> size_t
+    auto Client::write_callback(char * data, size_t size, size_t nmemb, std::string & buff) -> size_t
     {
         size_t result = 0;
 
         if (buff.c_str())
         {
-            buff.append(data, size * nmemb);
+            buff += data;
             result = size * nmemb;
         }
 
