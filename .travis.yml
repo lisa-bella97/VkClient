@@ -3,7 +3,7 @@ matrix:
   include:
     - os: linux
       sudo: required
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5 BUILD_TESTS="TRUE"
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5 -std=c++11 BUILD_TESTS="TRUE"
       addons:
         apt:
           packages:
