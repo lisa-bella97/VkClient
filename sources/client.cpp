@@ -23,6 +23,7 @@ namespace Vk
 
             if (curl_easy_perform(_curl) == CURLE_OK)
             {
+                std::cout << buffer << std::endl;
                 json jsn_token = (json::parse(buffer))["access_token"];
 
                 if (!jsn_token.is_null())
