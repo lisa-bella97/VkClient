@@ -32,7 +32,7 @@ namespace Vk
         std::string _code;
 #endif
 
-        static auto write_callback(char * data, size_t size, size_t nmemb, std::string & buff) -> size_t;
+        static auto write_callback(char * data, size_t size, size_t nmemb, void * buff) -> size_t;
     };
 }
 

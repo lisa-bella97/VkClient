@@ -19,7 +19,7 @@ namespace Vk
             curl_easy_setopt(_curl, CURLOPT_POSTFIELDS, fields.c_str());
             curl_easy_setopt(_curl, CURLOPT_POSTFIELDSIZE, fields.length());
             curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, write_callback);
-            curl_easy_setopt(_curl, CURLOPT_WRITEDATA, buffer);
+            curl_easy_setopt(_curl, CURLOPT_WRITEDATA, &buffer);
 
             if (curl_easy_perform(_curl) == CURLE_OK)
             {
@@ -72,7 +72,7 @@ namespace Vk
             curl_easy_setopt(_curl, CURLOPT_POSTFIELDS, fields.c_str());
             curl_easy_setopt(_curl, CURLOPT_POSTFIELDSIZE, fields.length());
             curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, write_callback);
-            curl_easy_setopt(_curl, CURLOPT_WRITEDATA, buffer);
+            curl_easy_setopt(_curl, CURLOPT_WRITEDATA, &buffer);
 
             if (curl_easy_perform(_curl) == CURLE_OK)
             {
@@ -110,14 +110,14 @@ namespace Vk
         curl_easy_reset(_curl);
     }
 
-    auto Client::write_callback(char * data, size_t size, size_t nmemb, std::string & buff) -> size_t
+    auto Client::write_callback(char * data, size_t size, size_t nmemb, void * buff) -> size_t
     {
         size_t result = 0;
 
-        if (buff.c_str())
+        if (buff)
         {
-            buff += data;
             result = size * nmemb;
+            ((std::string*)buff)->append(data, 0, result);
         }
 
         return result;

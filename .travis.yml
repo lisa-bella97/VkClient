@@ -1,24 +1,29 @@
 language: generic
+
+# Можно тестировать только на одной платформе (в данном случае выбрано osx, clang-3.8)
+
 matrix:
   include:
-    - os: linux
-      sudo: required
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
-      addons:
-        apt:
-          packages:
-            - g++-5
-            - cmake
-          sources: &sources
-            - llvm-toolchain-precise
-            - ubuntu-toolchain-r-test
+    #- os: linux
+      #sudo: required
+      #env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+      #addons:
+        #apt:
+          #packages:
+            #- g++-5
+            #- cmake
+          #sources: &sources
+            #- llvm-toolchain-precise
+            #- ubuntu-toolchain-r-test
     - os: osx
       compiler: clang-3.8
       env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
+
 env:
   global:
-    - secure: "PnH7NQzkfgwoon3mVQVhV1DjBykmkati30jdVRyW8u4flO98eWLAGPAp1hcYF3MiKs3vYskN/glPRUiuN2TiVg80lZica8OCDuN1dlaRbnsYkNejZyJ0YY7g4hnIYEpgjcQXtJhWQ3laRcskW5ULr0XFpp7UIyD1YLkYxAhHus9+CQNBckQBnMMK9q5yN73+XZMtdCcF8eODCyZi2yjX5rMFpUN/T5JR5vyLLkzBqxpeMg8oeUAOK9/obKKOM+6dV6Vl1fX8RBpuUo7umaSYJXvOrAySqRdHfPzFNNScfGZUa0YvHsxFqJHX+ZudbSPFSgb3UhwKTl8GhdaacBgMa4+bwH57CPJw3icbp8bSZ22glrJmyN67wZVJ9kDid165IO9EAUKg0OJf+tJwQHjMVPDIh9pVdVkPxmNWrH0kcuF8YP4LxVyeqY5qsJNBKYWOSlN3QMZm+3fokidX/WRHSMUlNUqtztQnNNEhB5aRPsYTUVkus0MdkSs+x+N/LLpUNDLlkkVxw6kxuv9TIlq/JK9zPPWivaq6HGhefhTvGmn3buB7I0r8sSJHQ1JNRLPB2t6dKaKCtUbwl23SrDsetvXI7umb+n/3u6Hz10jBoVGlZD4jseT0ro/7NQHLqpGmq0JtvxX+3ufpyR5TY/IG2cWF2DuSU8XJno2BHU03QtA="
-    - secure: "Lb65sNaAXmocOP2vArmPoIuCrvMCuPmPFTUfMvwr6PS9hxHBOi+5BIREyJgZ0TqkhOWgUGgqyvNWa6cld+lJsXxRAUFYC3FeBweg+d8wvvgnji4xnyhFSZvu2JSHuqn/6tcw/r1u/Vwyx3ZmuTvLrBqhNPohfDaXVHUwmjrBKzBJ444s+hh1r0lY0sZKrZPcv0TqMrgJadrdY3AphpUMRByj8KdIV1te2q81Vf6df8qhJKgR3FEakdDVUwVKNq7vPsedKVjUXZGrsXfL2mPW9BoxOK4RC650+NCWAmoE9nClzAer5Lou2d0tD1TCecqpXhVCnC5j4Pr+Qn2mHPCwS+jK8xwYUgdhTtn9H44S9nPHB100LxBp4I8ljkxBNmQXnJy6Ca0G7bsJZiarndIyUWPwe6WAJPvDOKPK73FJxvMabJCuGSN2XejnVY/WMm2WhZIgtJBmMQv987FV/aZy7PJDZj6unqcC+CmY0GaVkwyHaK7ULJVxXhcAD+vUytnNZy9Hi1AV6N/I1cFZ/g0O51dgZ3aKNt4M+NH/8qNaux76vvM66Ugz7YVeyKu+dMuemErjEm4qyFe9ya7GED5vEER39mb05IvINGKMin3naey6/tyo1JjnCR6im6laiaLc6pUFt1AstD0i9npKOaw5AEEsgP/AqCp+lAl1HmePed0="
+    - secure: "Qxv4DzZZ+NAniw9Lxv5FUm9A35b2OEGdiUDMnSr94OLxAWlAvvtZ5cKdnvk+97JIFGDtPryz45JTGyZY7lyiL8wVPXADf9S7pIK4GjzspOlzQOnm4XepM5UO3BIfXVV5Zld7aqLRtlj0bDtvfZzE04FvZD3HNuG8eC+PnQMfrptG3AHpzT96Yxe2Ef733JrnTZ/0WV2uM1slqkDIHm3rp/UAEYE1U5dOcw0a4OhnccPdOHuf/eNLlsQkGhLbN0V/e0sWkL5j/Eoex7jxZnvLGJ+Qyfspn0yBEJgXXFcWcwmrhQprCUFcjbrBoaGtiXkTHaPjXSKU5zyJobAn22K55VoNezK+A+JzTGudEbh5+UqBPcjZHaexwQNxz7+GNo8haZajpuF5K5kE6i3/IoI8OkfI38XFt9Lfcq4KQz1AblcQqO2EQukzHEXr3ivDgmwL08gm2mx4l8oPjM5YxZGw0Y6RZvSxVgDYRCDXi9O3Hf9oJ7+pHXvoisof57seaipbyBIkQIRw69PD/u/aX5Azf9MlHLsXj06pIMzUkFBI9DibLJz+RQUGsz0dfAM2kh3hRHFB1Xg9QnPpQ3aMgoX9Ncl7l+CsX6iVe9w9O56SFEn079Y+Hcd+Mgd+UJCqUU3ApdMz/hWdIHrT39xObBLnRvK3nPS3y3+a6OWgqAjTTTY="
+    - secure: "wnv8/Ggx8wWrQW5pnMWwmV8SM1YZq/QIyFQxQSkxBdYltFUyaP3T13rVo3XJtj0Y1eARjiP/ww7ogfBTfZe36yoITcxq5lk/9j1cdThhN+EFljzy0jixkGcg29ySKPZBcXYOHGpns6ZOIANAKy5GolqKDsckt4w8G9QiFcddTNOwJGYOAoGLj699ZVANisbAQqYOhL4I39e7iG0bMq0gYbAYBuqAljR1YEuFiK1J0kpL229vkM9XZdSQNoVXRwQiTQHSMDn4YJaAEvRJNHep/N8yNGeFW0s3MBW2YuBrGonZixcUNU2XkWDpqJDV8mN7WAL15l++myFuS9V9DFXZPVK1nD+6VkeU77q+8pv5lotnAhS5Gcbe13BG7XEzosbktiGi6fP0ovQ1qGq6uu6duHVXZeA5QWjJEUS++ota8TbNX387F/yR4e08Fiz6LrbC7+GCBA+z3qqklgoytSFN1xFJc078AsBR485EO6o/zAMEV9nqmQZ+/bKLXSlrsuizFSmETG/o5YPF4mNDbgn3Ilen+oCRnWchZvjeK/QelAbp1wBlJDku1P6GZwQ7ZtJBCszLbi/AVLXpjPJPzba9MSsTSl73Wi3FkueZP1FIvmsC0axKY3uv5ZrLM6K5u06J5zVN5nMFmWMTmo0onO/XCMFYBXyOfCBsnlAqR9u7nUw="
+
 script:
   - mkdir build && cd build
   - cmake .. && make
