@@ -12,13 +12,13 @@ matrix:
           sources: &sources
             - llvm-toolchain-precise
             - ubuntu-toolchain-r-test
-    #- os: osx
-      #compiler: clang-3.8
-      #env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
+    - os: osx
+      compiler: clang-3.8
+      env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
 env:
   global:
     - secure: "PnH7NQzkfgwoon3mVQVhV1DjBykmkati30jdVRyW8u4flO98eWLAGPAp1hcYF3MiKs3vYskN/glPRUiuN2TiVg80lZica8OCDuN1dlaRbnsYkNejZyJ0YY7g4hnIYEpgjcQXtJhWQ3laRcskW5ULr0XFpp7UIyD1YLkYxAhHus9+CQNBckQBnMMK9q5yN73+XZMtdCcF8eODCyZi2yjX5rMFpUN/T5JR5vyLLkzBqxpeMg8oeUAOK9/obKKOM+6dV6Vl1fX8RBpuUo7umaSYJXvOrAySqRdHfPzFNNScfGZUa0YvHsxFqJHX+ZudbSPFSgb3UhwKTl8GhdaacBgMa4+bwH57CPJw3icbp8bSZ22glrJmyN67wZVJ9kDid165IO9EAUKg0OJf+tJwQHjMVPDIh9pVdVkPxmNWrH0kcuF8YP4LxVyeqY5qsJNBKYWOSlN3QMZm+3fokidX/WRHSMUlNUqtztQnNNEhB5aRPsYTUVkus0MdkSs+x+N/LLpUNDLlkkVxw6kxuv9TIlq/JK9zPPWivaq6HGhefhTvGmn3buB7I0r8sSJHQ1JNRLPB2t6dKaKCtUbwl23SrDsetvXI7umb+n/3u6Hz10jBoVGlZD4jseT0ro/7NQHLqpGmq0JtvxX+3ufpyR5TY/IG2cWF2DuSU8XJno2BHU03QtA="
-    - secure: "npT7BsbJ2cv1JhHPBc2Fv2V3WulPoPXo+ojs/0VELsBGPX8lS9RIqwSBPuGhczk1JyM0Ta1oaK2mqCU8kD29BPaAWu04ZUAUpBNQnHndBrZ8o/WLLUKLmZNHUlsrtmCGlxoElqZLtDBSVzMgoFWhAE6YzXeUxsqDkhkcZlsZL9h8INy3A4Q6g39MzMMVETvUwMOoLbCm1ufa4cH8LxyB7gkPrlLYVeItvY6g2QFdhNmRM0MXr5mfPP11AII4ZVxVbXUuZhY9R4hMHkcOD6qEGW5kcyn9po7bvICNBzHZWlSwE9tn1gZkwbDR2zabvr8rlZQljh4fVJ8NMkFymI26UQHIDF0KiLCBzvpF8QOJEZll/0oVdlICElNmVGroPN7AAzMSzIfhgMAYBlqfWH6R8JIf1ZkdCciP7hlshibW5Qas52u24kuirqxZ1J01z1TSw3OecEjd9P80i5aQJGQrLlEYAh1hc7//iip3125ImmY+MsocsUwWwouWPiqqYZiQ9cnydHWwc5od3prUNRLl8RU4S6Gq/L+Z1s6CNX8+canbZBX8AVgWHpn/rbgM7UkDOBkWbfg7IIoTUWBrKlEZVvXDLCu7jNnv3f3Ex93yO/AI2xe1yGuGUlISc7d3IbllVSClY6wZEqjxTZx9sgWXIcnb0jtlQW6HMkimnOmsO+g="
+    - secure: "Lb65sNaAXmocOP2vArmPoIuCrvMCuPmPFTUfMvwr6PS9hxHBOi+5BIREyJgZ0TqkhOWgUGgqyvNWa6cld+lJsXxRAUFYC3FeBweg+d8wvvgnji4xnyhFSZvu2JSHuqn/6tcw/r1u/Vwyx3ZmuTvLrBqhNPohfDaXVHUwmjrBKzBJ444s+hh1r0lY0sZKrZPcv0TqMrgJadrdY3AphpUMRByj8KdIV1te2q81Vf6df8qhJKgR3FEakdDVUwVKNq7vPsedKVjUXZGrsXfL2mPW9BoxOK4RC650+NCWAmoE9nClzAer5Lou2d0tD1TCecqpXhVCnC5j4Pr+Qn2mHPCwS+jK8xwYUgdhTtn9H44S9nPHB100LxBp4I8ljkxBNmQXnJy6Ca0G7bsJZiarndIyUWPwe6WAJPvDOKPK73FJxvMabJCuGSN2XejnVY/WMm2WhZIgtJBmMQv987FV/aZy7PJDZj6unqcC+CmY0GaVkwyHaK7ULJVxXhcAD+vUytnNZy9Hi1AV6N/I1cFZ/g0O51dgZ3aKNt4M+NH/8qNaux76vvM66Ugz7YVeyKu+dMuemErjEm4qyFe9ya7GED5vEER39mb05IvINGKMin3naey6/tyo1JjnCR6im6laiaLc6pUFt1AstD0i9npKOaw5AEEsgP/AqCp+lAl1HmePed0="
 script:
   - mkdir build && cd build
   - cmake .. && make

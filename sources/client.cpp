@@ -11,7 +11,6 @@ namespace Vk
         if (_curl)
         {
 #ifdef USE_AUTH_CODE_FLOW
-            std::cout << std::string(getenv("CL_SECRET")) << std::endl;
             std::string fields = "client_id=5682862&client_secret=" + std::string(getenv("CL_SECRET")) +"&redirect_uri=https://oauth.vk.com/blank.html&code=" + _code;
             std::string buffer = "";
 
