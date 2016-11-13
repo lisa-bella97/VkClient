@@ -1,6 +1,7 @@
 #include <vk/client.hpp>
-#include <iostream>
 #include "catch.hpp"
+
+Vk::Client client;
 
 #ifdef USE_AUTH_CODE_FLOW
 SCENARIO("client must check connection using an authorization code")
@@ -11,7 +12,7 @@ SCENARIO("client must check connection using an authorization code")
 
         WHEN("initialize client")
         {
-            Vk::Client client(invalid_code);
+            client.set_settings(invalid_code);
 
             THEN("check_connection() must return false")
             {
@@ -26,7 +27,7 @@ SCENARIO("client must check connection using an authorization code")
 
         WHEN("initialize client")
         {
-            Vk::Client client(valid_code);
+            client.set_settings(valid_code);
 
             THEN("check_connection() must return true")
             {
@@ -44,7 +45,7 @@ SCENARIO("client must check connection using a token")
 
         WHEN("initialize client")
         {
-            Vk::Client client(invalid_settings);
+            client.set_settings(invalid_settings);
 
             THEN("check_connection() must return false")
             {
@@ -60,7 +61,7 @@ SCENARIO("client must check connection using a token")
 
         WHEN("initialize client")
         {
-            Vk::Client client(valid_settings);
+            client.set_settings(valid_settings);
 
             THEN("check_connection() must return true")
             {
@@ -70,3 +71,22 @@ SCENARIO("client must check connection using a token")
     }
 }
 #endif
+
+SCENARIO("client must get friends correctly")
+{
+    GIVEN("an authorized client and a json object with his friends")
+    {
+        Vk::Client::json friends = R"([{"bdate":"5.4.1997","first_name":"Елизавета","id":126643967,"last_name":"Прохорова","online":0}])"_json;
+
+        WHEN("get friends")
+        {
+            Vk::Client::json friends_from_get = client.get_friends();
+            bool are_same = (friends == friends_from_get);
+
+            THEN("json objects must be the same")
+            {
+                REQUIRE(are_same);
+            }
+        }
+    }
+}

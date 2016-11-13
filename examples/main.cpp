@@ -1,5 +1,6 @@
 #include <vk/client.hpp>
-#include <iostream>
+
+void print_friends(const Vk::Client::json & friends);
 
 int main()
 {
@@ -22,7 +23,37 @@ int main()
     if (vk_cl.check_connection())
         std::cout << "Connected." << std::endl;
 
-    vk_cl.get_friends();
+    print_friends(vk_cl.get_friends());
 
     return 0;
+}
+
+void print_friends(const Vk::Client::json & friends)
+{
+    int counter = 0;
+
+    for (Vk::Client::json::const_iterator it = friends.begin(); it != friends.end(); ++it)
+    {
+        std::cout << ++counter << ". ";
+
+        Vk::Client::json jsn_id = it.value()["id"];
+        if (!jsn_id.is_null())
+            std::cout << "id" << ": " << jsn_id.begin().value() << std::endl;
+
+        Vk::Client::json jsn_fname = it.value()["first_name"];
+        if (!jsn_fname.is_null())
+            std::cout << "first name" << ": " << jsn_fname.begin().value() << std::endl;
+
+        Vk::Client::json jsn_lname = it.value()["last_name"];
+        if (!jsn_lname.is_null())
+            std::cout << "last name" << ": " << jsn_lname.begin().value() << std::endl;
+
+        Vk::Client::json jsn_bdate = it.value()["bdate"];
+        if (!jsn_bdate.is_null())
+            std::cout << "birthday" << ": " << jsn_bdate.begin().value() << std::endl;
+
+        Vk::Client::json jsn_online = it.value()["online"];
+        if (!jsn_online.is_null())
+            std::cout << "online" << ": " << ((int)jsn_online.begin().value() == 1 ? "yes" : "no") << std::endl;
+    }
 }

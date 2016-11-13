@@ -2,6 +2,7 @@
 #define VKCLIENT_CLIENT_HPP
 
 #include <curl/curl.h>
+#include "json.hpp"
 #include <string>
 #include <map>
 
@@ -13,16 +14,20 @@ namespace Vk
     {
     public:
         using dict_t = std::map<std::string, std::string>;
+        using json = nlohmann::json;
 
 #ifdef USE_AUTH_CODE_FLOW
-        Client(std::string code) : _code(code), _curl(curl_easy_init()) {}
+        Client(const std::string & code) : _code(code), _curl(curl_easy_init()) {}
+        auto set_settings(const std::string & code) -> void { _code = code; }
 #else
-        Client(dict_t settings) : _settings(settings), _curl(curl_easy_init()) {}
+        Client(const dict_t & settings) : _settings(settings), _curl(curl_easy_init()) {}
+        auto set_settings(const dict_t & settings) -> void { _settings = settings; }
 #endif
 
+        Client() : _curl(curl_easy_init()) {}
         ~Client() { curl_easy_cleanup(_curl); }
         auto check_connection() -> bool;
-        auto get_friends() -> void;
+        auto get_friends() -> json;
 
     private:
         CURL * _curl;
