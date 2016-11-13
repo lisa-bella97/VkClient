@@ -23,7 +23,6 @@ namespace Vk
 
             if (curl_easy_perform(_curl) == CURLE_OK)
             {
-                std::cout << buffer << std::endl;
                 json jsn_token = (json::parse(buffer))["access_token"];
 
                 if (!jsn_token.is_null())
@@ -42,7 +41,7 @@ namespace Vk
             curl_easy_setopt(_curl, CURLOPT_POSTFIELDS, fields.c_str());
             curl_easy_setopt(_curl, CURLOPT_POSTFIELDSIZE, fields.length());
             curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, write_callback);
-            curl_easy_setopt(_curl, CURLOPT_WRITEDATA, buffer);
+            curl_easy_setopt(_curl, CURLOPT_WRITEDATA, &buffer);
 
             if (curl_easy_perform(_curl) == CURLE_OK)
             {

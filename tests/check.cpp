@@ -23,7 +23,6 @@ SCENARIO("client must check connection using an authorization code")
     GIVEN("a valid authorization code")
     {
         std::string valid_code = getenv("VALID_CODE");
-        std::cout << valid_code << std::endl;
 
         WHEN("initialize client")
         {
