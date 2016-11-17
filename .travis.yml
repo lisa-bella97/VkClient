@@ -1,20 +1,18 @@
 language: generic
 
-# Можно тестировать только на одной платформе (в данном случае выбрано osx, clang-3.8)
-
 matrix:
   include:
-    #- os: linux
-      #sudo: required
-      #env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
-      #addons:
-        #apt:
-          #packages:
-            #- g++-5
-            #- cmake
-          #sources: &sources
-            #- llvm-toolchain-precise
-            #- ubuntu-toolchain-r-test
+    - os: linux
+      sudo: required
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+      addons:
+        apt:
+          packages:
+            - g++-5
+            - cmake
+          sources: &sources
+            - llvm-toolchain-precise
+            - ubuntu-toolchain-r-test
     - os: osx
       compiler: clang-3.8
       env: COMPILER="clang++-3.8" -std=c++11 OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
@@ -29,4 +27,5 @@ env:
 script:
   - mkdir build && cd build
   - cmake .. -DOPENSSL_ROOT_DIR=/usr/local/ssl -DOPENSSL_LIBRARIES=/usr/local/ssl/lib && make
-  - ./check -s -r compact
+  # Можно выполнять только на одной ОС
+  #- ./check -s -r compact
