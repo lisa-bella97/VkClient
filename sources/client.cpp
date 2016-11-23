@@ -114,16 +114,13 @@ namespace Vk
 
             auto friends_size = friends.size();
 
-            auto print_func = [friends, is_debug, threads_num, friends_size](int thread_index)
+            auto print_func = [&friends, is_debug, threads_num, friends_size](int thread_index)
             {
+                if (is_debug)
                 {
                     std::lock_guard<std::mutex> lock(mutex);
-
-                    if (is_debug)
-                    {
-                        std::time_t tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-                        std::cout << "Thread " << thread_index + 1 << std::endl << "Start time: " << ctime(&tt);
-                    }
+                    std::time_t tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+                    std::cout << "Thread " << thread_index + 1 << std::endl << "Start time: " << ctime(&tt);
                 }
 
                 for (auto i = thread_index; i < friends_size; i += threads_num)
@@ -131,7 +128,9 @@ namespace Vk
                     {
                         std::lock_guard<std::mutex> lock(mutex);
 
-                        std::cout << "Thread " << thread_index + 1 << std::endl;
+                        if (is_debug)
+                            std::cout << "Thread " << thread_index + 1 << std::endl;
+
                         std::cout << i + 1 << ". ";
                         auto value = friends.at(i);
 
@@ -159,13 +158,12 @@ namespace Vk
                             std::cout << "online: " << ((int)jsn_online.begin().value() == 1 ? "yes" : "no") << std::endl << std::endl;
                     }
 
-                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Чтобы потоки выводились более-менее упорядоченно
                 }
-
-                std::lock_guard<std::mutex> lock(mutex);
 
                 if (is_debug)
                 {
+                    std::lock_guard<std::mutex> lock(mutex);
                     std::time_t tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
                     std::cout << "Thread " << thread_index + 1 << std::endl << "End time: " << ctime(&tt);
                 }
