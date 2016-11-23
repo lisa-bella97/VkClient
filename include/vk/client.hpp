@@ -5,6 +5,7 @@
 #include "json.hpp"
 #include <string>
 #include <map>
+#include <mutex>
 
 #define USE_AUTH_CODE_FLOW // Используется Authorization Code Flow для получения ключа доступа пользователя; иначе - Implicit Flow
 
@@ -19,9 +20,12 @@ namespace Vk
         Client() : _curl(curl_easy_init()) {}
         Client(const dict_t & settings);
         ~Client() { curl_easy_cleanup(_curl); }
+
         auto check_connection() -> bool;
         auto get_friends() -> json;
         auto set_settings(const dict_t & settings) -> void { _settings = settings; }
+
+        static auto parallel_print_friends(const Vk::Client::json & friends, size_t threads_num, bool is_debug) -> void;
 
     private:
         CURL * _curl;
