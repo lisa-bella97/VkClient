@@ -104,14 +104,14 @@ namespace Vk
 
     auto Client::sync_print_friends(const Vk::Client::json & friends, size_t threads_count, bool is_debug) -> void
     {
+        if (threads_count < 1 || threads_count > std::thread::hardware_concurrency())
+        {
+            std::cout << "Wrong number of threads." << std::endl;
+            return;
+        }
+
         if (!friends.is_null())
         {
-            if (threads_count < 1 || threads_count > std::thread::hardware_concurrency())
-            {
-                std::cout << "Wrong number of threads." << std::endl;
-                return;
-            }
-
             auto friends_size = friends.size();
             auto thread_index = 0;
 
