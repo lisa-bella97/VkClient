@@ -102,79 +102,79 @@ namespace Vk
         return nullptr;
     }
 
-    auto Client::parallel_print_friends(const Vk::Client::json & friends, size_t threads_num, bool is_debug) -> void
+    auto Client::sync_print_friends(const Vk::Client::json & friends, size_t threads_count, bool is_debug) -> void
     {
         if (!friends.is_null())
         {
-            if (threads_num < 1 || threads_num > std::thread::hardware_concurrency())
+            if (threads_count < 1 || threads_count > std::thread::hardware_concurrency())
             {
                 std::cout << "Wrong number of threads." << std::endl;
                 return;
             }
 
             auto friends_size = friends.size();
+            auto thread_index = 0;
 
-            auto print_func = [&friends, is_debug, threads_num, friends_size](int thread_index)
+            auto print_func = [&friends, &is_debug, threads_count, friends_size, &thread_index](int current_index)
             {
-                if (is_debug)
+                for (auto i = current_index; i < friends_size; i += threads_count)
                 {
+                    while (thread_index != current_index)
+                        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
                     std::lock_guard<std::mutex> lock(mutex);
-                    std::time_t tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-                    std::cout << "Thread " << thread_index + 1 << std::endl << "Start time: " << ctime(&tt);
-                }
 
-                for (auto i = thread_index; i < friends_size; i += threads_num)
-                {
+                    if (is_debug)
                     {
-                        std::lock_guard<std::mutex> lock(mutex);
-
-                        if (is_debug)
-                            std::cout << "Thread " << thread_index + 1 << std::endl;
-
-                        std::cout << i + 1 << ". ";
-                        auto value = friends.at(i);
-
-                        Vk::Client::json jsn_id = value["id"];
-                        if (!jsn_id.is_null())
-                            std::cout << "id: " << jsn_id.begin().value() << std::endl;
-
-                        Vk::Client::json jsn_fname = value["first_name"];
-                        if (!jsn_fname.is_null())
-                            std::cout << "first name: " << jsn_fname.begin().value() << std::endl;
-
-                        Vk::Client::json jsn_lname = value["last_name"];
-                        if (!jsn_lname.is_null())
-                            std::cout << "last name: " << jsn_lname.begin().value() << std::endl;
-
-                        if (value.find("bdate") != value.end())
-                        {
-                            Vk::Client::json jsn_bdate = value["bdate"];
-                            if (!jsn_bdate.is_null())
-                                std::cout << "birthday: " << jsn_bdate.begin().value() << std::endl;
-                        }
-
-                        Vk::Client::json jsn_online = value["online"];
-                        if (!jsn_online.is_null())
-                            std::cout << "online: " << ((int)jsn_online.begin().value() == 1 ? "yes" : "no") << std::endl << std::endl;
+                        std::time_t timer = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+                        std::cout << "Thread " << current_index + 1 << std::endl << "Start time: " << ctime(&timer);
                     }
 
-                    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Чтобы потоки выводились более-менее упорядоченно
-                }
+                    std::cout << i + 1 << ". ";
+                    auto value = friends.at(i);
 
-                if (is_debug)
-                {
-                    std::lock_guard<std::mutex> lock(mutex);
-                    std::time_t tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-                    std::cout << "Thread " << thread_index + 1 << std::endl << "End time: " << ctime(&tt);
+                    Vk::Client::json jsn_id = value["id"];
+                    if (!jsn_id.is_null())
+                        std::cout << "id: " << jsn_id.begin().value() << std::endl;
+
+                    Vk::Client::json jsn_fname = value["first_name"];
+                    if (!jsn_fname.is_null())
+                        std::cout << "first name: " << jsn_fname.begin().value() << std::endl;
+
+                    Vk::Client::json jsn_lname = value["last_name"];
+                    if (!jsn_lname.is_null())
+                        std::cout << "last name: " << jsn_lname.begin().value() << std::endl;
+
+                    if (value.find("bdate") != value.end())
+                    {
+                        Vk::Client::json jsn_bdate = value["bdate"];
+                        if (!jsn_bdate.is_null())
+                            std::cout << "birthday: " << jsn_bdate.begin().value() << std::endl;
+                    }
+
+                    Vk::Client::json jsn_online = value["online"];
+                    if (!jsn_online.is_null())
+                        std::cout << "online: " << ((int)jsn_online.begin().value() == 1 ? "yes" : "no") << std::endl;
+
+                    if (thread_index < threads_count - 1)
+                        thread_index++;
+                    else
+                        thread_index = 0;
+
+                    if (is_debug)
+                    {
+                        std::time_t timer = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+                        std::cout << "End time: " << ctime(&timer) << std::endl;
+                    }
                 }
             };
 
             std::vector<std::thread> threads;
 
-            for (auto i = 0; i < threads_num; i++)
+            for (auto i = 0; i < threads_count; i++)
                 threads.push_back(std::thread(print_func, i));
 
-            for (auto i = 0; i < threads_num; i++)
+            for (auto i = 0; i < threads_count; i++)
                 if (threads[i].joinable())
                     threads[i].join();
         }

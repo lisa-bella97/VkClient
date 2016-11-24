@@ -25,7 +25,7 @@ namespace Vk
         auto get_friends() -> json;
         auto set_settings(const dict_t & settings) -> void { _settings = settings; }
 
-        static auto parallel_print_friends(const Vk::Client::json & friends, size_t threads_num, bool is_debug) -> void;
+        static auto sync_print_friends(const Vk::Client::json & friends, size_t threads_num, bool is_debug) -> void;
 
     private:
         CURL * _curl;
