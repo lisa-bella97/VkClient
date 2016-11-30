@@ -102,7 +102,7 @@ namespace Vk
         return nullptr;
     }
 
-    auto Client::sync_print_friends(const Vk::Client::json & friends, size_t threads_count, bool is_debug) -> void
+    auto Client::sync_print_friends(const Vk::Client::json & friends, int threads_count, bool is_debug) -> void
     {
         if (threads_count < 1 || threads_count > std::thread::hardware_concurrency())
         {
@@ -115,7 +115,7 @@ namespace Vk
             auto friends_size = friends.size();
             auto thread_index = 0;
 
-            auto print_func = [&friends, &is_debug, threads_count, friends_size, &thread_index](int current_index)
+            auto print_func = [&friends, is_debug, threads_count, friends_size, thread_index](int current_index)
             {
                 for (auto i = current_index; i < friends_size; i += threads_count)
                 {
