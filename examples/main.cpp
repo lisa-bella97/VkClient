@@ -4,7 +4,7 @@ int main(int argc, char ** argv)
 {
 #ifdef USE_AUTH_CODE_FLOW
     std::string code;
-    std::cout << "Для получения code пройдите по данному url:" << std::endl;
+    std::cout << "Для получения code перейдите по данному URL:" << std::endl;
     std::cout << "https://oauth.vk.com/authorize?client_id=5682862&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&response_type=code&v=5.60" << std::endl;
     std::cout << "code = ";
     std::cin >> code;
