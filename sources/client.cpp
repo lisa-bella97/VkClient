@@ -112,11 +112,11 @@ namespace Vk
 
         if (!friends.is_null())
         {
-            auto friends_size = friends.size();
-            auto thread_index = 0;
-
-            auto print_func = [&friends, is_debug, threads_count, friends_size, thread_index](int current_index)
+            auto print_func = [&friends, is_debug, threads_count](int current_index)
             {
+                auto friends_size = friends.size();
+                auto thread_index = 0;
+                
                 for (auto i = current_index; i < friends_size; i += threads_count)
                 {
                     while (thread_index != current_index)
